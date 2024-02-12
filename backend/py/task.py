@@ -75,8 +75,34 @@ Task 3
 """
 
 
+def largestFileSizeHelper(parent_file: File, files: list[File]) -> int:
+    size = parent_file.size
+
+    for file in files:
+        if file.id == parent_file:
+            continue
+
+        if file.parent == parent_file.id:
+            # Use recursion to find the size of a file OR folder
+            size += largestFileSizeHelper(file, files)
+
+    return size
+
+
 def largestFileSize(files: list[File]) -> int:
-    return 0
+    # Time Complexity: O(n^2) (?)
+    # Space Complexity: O(1)
+
+    if files == []:
+        return 0
+
+    max_size = files[0].size
+    for file in files:
+        local_max = largestFileSizeHelper(file, files)
+        if local_max > max_size:
+            max_size = local_max
+
+    return max_size
 
 
 if __name__ == "__main__":

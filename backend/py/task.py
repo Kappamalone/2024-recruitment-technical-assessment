@@ -44,7 +44,27 @@ Task 2
 
 
 def kLargestCategories(files: list[File], k: int) -> list[str]:
-    return []
+    category_map = {}
+    for file in files:
+        for category in file.categories:
+            if category in category_map:
+                category_map[category] += 1
+            else:
+                category_map[category] = 1
+
+    # turn the hashmap into an array
+    category_list = [(key, value) for key, value in category_map.items()]
+
+    # sort it by the frequency of a category occuring
+    category_list = sorted(category_list, key=lambda x: x[1], reverse=True)
+
+    # transform the tuple with frequency information into just an array with strings
+    result = list(map(lambda x: x[0], category_list))
+
+    # finally, truncate the array using k
+    result = result[0 : min(k, len(files))]
+
+    return result
 
 
 """
